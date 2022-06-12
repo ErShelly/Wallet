@@ -1,0 +1,121 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2638
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Bold;\f1\fnil\fcharset0 Menlo-Regular;\f2\fswiss\fcharset0 Helvetica;
+}
+{\colortbl;\red255\green255\blue255;\red127\green127\blue127;\red0\green0\blue0;\red255\green255\blue10;
+\red255\green255\blue10;\red22\green21\blue22;\red255\green255\blue255;}
+{\*\expandedcolortbl;;\cssrgb\c57046\c57047\c57046;\cssrgb\c0\c0\c0;\cssrgb\c99942\c98555\c0;
+\cssrgb\c99942\c98555\c0;\cssrgb\c11373\c10980\c11373;\cssrgb\c100000\c100000\c100000;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid1\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{none\}}{\leveltext\leveltemplateid101\'00;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}}
+\paperw11900\paperh16840\margl1440\margr1440\vieww13440\viewh6680\viewkind0
+\deftab1059
+\pard\pardeftab1059\sl264\slmult1\pardirnatural\partightenfactor0
+
+\f0\b\fs28 \cf0 \cb2 Command Line:
+\f1\b0\fs22 \cb1 \
+\pard\pardeftab1059\pardirnatural\partightenfactor0
+\cf0 \
+
+\fs26 1. List how many files (hidden files included) are there in your home directory\
+\cf3 \cb4 find ~ -maxdepth 1 -type f //Returns list\
+find ~ -maxdepth 1 -type f | wc -l //Returns count\
+\
+\pard\tx220\tx720\pardeftab1059\li720\fi-720\pardirnatural\partightenfactor0
+\ls1\ilvl0\cf0 \cb1 \
+2. List how many directories (hidden dirs included) are there in your home directory\
+\pard\pardeftab1059\pardirnatural\partightenfactor0
+\cf0 \cb4 ls -d .*/ */\
+ls -d .*/ */ | wc -l\cb1 \
+\
+3. List all files/directories starting with letter \'93D\'94 in your home directory\
+\cb4 ls ~ | grep ^D\cb1 \
+\
+4. Change permissions to a text file by giving read-write access to owners and groups only.\
+\cb4 chmod 660 filename.txt\cb1 \
+\
+5. Find out which processes are taking up maximum CPU\
+\cb4 ps aux| sort -nrk 3,3 | head -n 1\cb1 \
+\
+6. Find out which processes are taking up more memory\
+\cb4 ps aux| sort -nrk 4,4 | head -n 1\cb1 \
+\
+7. Copy a text file from home directory to \'93tmp\'94 directory\
+\cb4 cp ~/copyfile.txt /tmp\cb1 \
+\
+8. Given a text file, employee.txt, find out the following\
+\
+   a. List all employee ids, names and role whose name starts with \'93J\'94\
+\cb4 awk '$2 ~ "^J"\{print $1, $2, $4\}' employee.txt\cb1 \
+\
+   b. List all fields, sorted by name in ascending order whose department is \'93Technology\'94 and write them into emp.txt\
+\cb4 sort -k 2,2 employee.txt | awk '$4 == "Technology"'\cb1 \
+\
+   c. List name and salaries of employees who work in \'93Technology\'94 department as a \'93Sysadmin\'94 and overwrite emp.txt\
+\cb4 awk '$4 == "Technology" && $3 == "Sysadmin"\{print $2, $5\}' employee.txt > emp.txt\cb1 \
+\
+   d. Calculate the average salary of all employees\
+\cb4 awk '\{gsub("[$,]", "", $5); sum+=$5\} END\{print sum/NR\}' employee.txt\cb1 \
+\
+   e. List the distinct departments in the organisation.\
+\cb4 awk '\{print $4\}' employee.txt | sort -u\cb1 \
+\
+   f. Count the number of employees who are developers\
+\cb4 awk '$3 == "Developer"\{count++\} END\{print count\}' employee.txt\cb1 \
+\
+   g. Print the distinct salaries of employees without $ sign\
+\cb4 awk '\{print substr($5,2)\}' employee.txt\cb1 \
+
+\fs22 \
+\
+
+\f0\b\fs28 \cf3 \cb2 OS:
+\f1\b0\fs22 \cf0 \cb1 \
+
+\fs26 1. Find out how to determine the OS architecture? (Is it 32 bit or 64 bit)\
+\cb4 uname -m\cb1 \
+\
+2. How to shutdown the OS from the command line.\
+\cb4 sudo shutdown\cb1 \
+\
+3. Find out what shell you are using.\
+\cb4 echo $0\cb1 \
+\
+4. Find out which processes are taking more memory from the command line ?\
+\pard\pardeftab1059\pardirnatural\partightenfactor0
+\cf0 \cb5 ps aux| sort -nrk 4,4 | head -n 1\cb1 \
+\
+5. How do you terminate one process from the command line ?\
+\pard\pardeftab1059\pardirnatural\partightenfactor0
+\cf0 \cb4 kill 15800\
+Kill -s KILL 15800\cb1 \
+\
+\
+6. What is a symlink ? And how do you create one ?\
+\cb4 ln -s demo.txt symlinkdemo1\
+
+\fs22 \cb1 \
+
+\f0\b\fs28 \cb2 Networking
+\f1\b0\fs22 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf6 \cb7 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec6 1. ping.\
+\cf3 \cb4 ping -c 5 -q www.thoughtworks.com\
+\cf6 \cb7 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls2\ilvl0\cf6 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 2. \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec6 nslookup.\
+\ls2\ilvl0\cb4 nslookup thoughtworks.com\
+\ls2\ilvl0\cb7 \
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 3. \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec6 command to find ip address and mac id of the interface\
+\ls2\ilvl0\cb4 ifconfig | grep "inet "\cb7 \
+\ls2\ilvl0\cb4 ifconfig en0 | awk '/ether/\{print $2\}'\cb7 \
+\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 4. \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec6 find the hostname of the machine.\
+\ls2\ilvl0\cb4 hostname -s
+\f2\fs30 \cb1 \
+}
