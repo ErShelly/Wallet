@@ -1,0 +1,84 @@
+Command Line:
+
+1. List how many files (hidden files included) are there in your home directory
+find ~ -maxdepth 1 -type f //Returns list
+find ~ -maxdepth 1 -type f | wc -l //Returns count
+
+
+2. List how many directories (hidden dirs included) are there in your home directory
+ls -d .*/ */
+ls -d .*/ */ | wc -l
+
+3. List all files/directories starting with letter “D” in your home directory
+ls ~ | grep ^D
+
+4. Change permissions to a text file by giving read-write access to owners and groups only.
+chmod 660 filename.txt
+
+5. Find out which processes are taking up maximum CPU
+ps aux| sort -nrk 3,3 | head -n 1
+
+6. Find out which processes are taking up more memory
+ps aux| sort -nrk 4,4 | head -n 1
+
+7. Copy a text file from home directory to “tmp” directory
+cp ~/copyfile.txt /tmp
+
+8. Given a text file, employee.txt, find out the following
+
+   a. List all employee ids, names and role whose name starts with “J”
+awk '$2 ~ "^J"{print $1, $2, $4}' employee.txt
+
+   b. List all fields, sorted by name in ascending order whose department is “Technology” and write them into emp.txt
+sort -k 2,2 employee.txt | awk '$4 == "Technology"'
+
+   c. List name and salaries of employees who work in “Technology” department as a “Sysadmin” and overwrite emp.txt
+awk '$4 == "Technology" && $3 == "Sysadmin"{print $2, $5}' employee.txt > emp.txt
+
+   d. Calculate the average salary of all employees
+awk '{gsub("[$,]", "", $5); sum+=$5} END{print sum/NR}' employee.txt
+
+   e. List the distinct departments in the organisation.
+awk '{print $4}' employee.txt | sort -u
+
+   f. Count the number of employees who are developers
+awk '$3 == "Developer"{count++} END{print count}' employee.txt
+
+   g. Print the distinct salaries of employees without $ sign
+awk '{print substr($5,2)}' employee.txt
+
+
+OS:
+1. Find out how to determine the OS architecture? (Is it 32 bit or 64 bit)
+uname -m
+
+2. How to shutdown the OS from the command line.
+sudo shutdown
+
+3. Find out what shell you are using.
+echo $0
+
+4. Find out which processes are taking more memory from the command line ?
+ps aux| sort -nrk 4,4 | head -n 1
+
+5. How do you terminate one process from the command line ?
+kill 15800
+Kill -s KILL 15800
+
+
+6. What is a symlink ? And how do you create one ?
+ln -s demo.txt symlinkdemo1
+
+Networking
+1. ping.
+ping -c 5 -q www.thoughtworks.com
+
+2. nslookup.
+nslookup thoughtworks.com
+
+3. command to find ip address and mac id of the interface
+ifconfig | grep "inet "
+ifconfig en0 | awk '/ether/{print $2}'
+
+4. find the hostname of the machine.
+hostname -s
