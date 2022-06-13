@@ -14,7 +14,7 @@ public class USDWallet implements Wallet {
     public Double depositWalletTransaction(Double existingBalance, String depositCurrencyCode, Double depositAmount) {
         if (depositCurrencyCode == "INR") {
             decimalFormat.setRoundingMode(RoundingMode.DOWN);
-            Double depositAmountInUSD = depositAmount / 78.14;
+            Double depositAmountInUSD = INRtoUSDConversion(depositAmount);
             return Double.valueOf(decimalFormat.format(existingBalance + depositAmountInUSD));
         }
         return existingBalance + depositAmount;
@@ -24,12 +24,16 @@ public class USDWallet implements Wallet {
     public Double withdrawWalletTransaction(Double existingBalance, String withdrawalCurrencyCode, Double withdrawalAmount) throws CannotProceedException {
         if (withdrawalCurrencyCode == "INR") {
             decimalFormat.setRoundingMode(RoundingMode.DOWN);
-            Double withdrawalAmountInUSD = withdrawalAmount / 78.14;
+            Double withdrawalAmountInUSD = INRtoUSDConversion(withdrawalAmount);
             if (existingBalance < withdrawalAmountInUSD) {
                 throw new CannotProceedException("Not enough Balance.");
             }
             return Double.valueOf(decimalFormat.format(existingBalance - withdrawalAmountInUSD));
         }
         return existingBalance - withdrawalAmount;
+    }
+
+    private Double INRtoUSDConversion(Double INRValue){
+        return  INRValue / 78.14;
     }
 }
