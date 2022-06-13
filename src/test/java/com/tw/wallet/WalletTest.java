@@ -35,6 +35,26 @@ class WalletTest {
     }
 
     @Test
+    void shouldThrowInvalidInputExceptionWhenDepositAmountIsZeroForINRWallet() {
+        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
+            INRWallet inrWallet = new INRWallet();
+            Double actualAmount = inrWallet.depositWalletTransaction(30.00, "INR", 0.00);
+        });
+
+        assertEquals("Invalid input", exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowInvalidInputExceptionWhenDepositAmountIsNegativeForINRWallet() {
+        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
+            INRWallet inrWallet = new INRWallet();
+            Double actualAmount = inrWallet.depositWalletTransaction(30.00, "INR", -8.00);
+        });
+
+        assertEquals("Invalid input", exception.getMessage());
+    }
+
+    @Test
     void shouldReturn3dot86WhenWalletHas74dot85INRAnd1USDAnd149dot7INRWithPreferredCurrencyUSD() {
         Double walletBalance = 0.00;
 
@@ -45,6 +65,8 @@ class WalletTest {
         walletBalance = usdWallet.depositWalletTransaction(walletBalance, "INR", 149.7);
         assertEquals(3.86, walletBalance);
     }
+
+
 
     //USD Wallet Test
 
@@ -89,6 +111,26 @@ class WalletTest {
         USDWallet usdWallet = new USDWallet();
         Double actualAmount = usdWallet.withdrawWalletTransaction(800.00, "INR", 200.00);
         assertEquals(797.44, actualAmount);
+    }
+
+    @Test
+    void shouldThrowInvalidInputExceptionWhenDepositAmountIsZeroForUSDWallet() {
+        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
+            USDWallet usdWallet = new USDWallet();
+            Double actualAmount = usdWallet.depositWalletTransaction(30.00, "INR", 0.00);
+        });
+
+        assertEquals("Invalid input", exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowInvalidInputExceptionWhenDepositAmountIsNegativeForUSDWallet() {
+        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
+            USDWallet usdWallet = new USDWallet();
+            Double actualAmount = usdWallet.depositWalletTransaction(30.00, "USD", -8.00);
+        });
+
+        assertEquals("Invalid input", exception.getMessage());
     }
 
     @Test

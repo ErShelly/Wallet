@@ -9,6 +9,9 @@ public class INRWallet implements Wallet {
 
     @Override
     public Double depositWalletTransaction(Double existingBalance, String depositCurrencyCode, Double depositAmount) {
+        if(depositAmount == 0 || depositAmount < 0){
+            throw new IllegalArgumentException("Invalid input");
+        }
         if (depositCurrencyCode == "USD") {
             decimalFormat.setRoundingMode(RoundingMode.DOWN);
             Double depositAmountInINR = USDtoINRConversion(depositAmount);
@@ -19,6 +22,9 @@ public class INRWallet implements Wallet {
 
     @Override
     public Double withdrawWalletTransaction(Double existingBalance, String withdrawalCurrencyCode, Double withdrawalAmount) throws CannotProceedException {
+        if(withdrawalAmount == 0 || withdrawalAmount < 0){
+            throw new IllegalArgumentException("Invalid input");
+        }
         if (withdrawalCurrencyCode == "USD") {
             decimalFormat.setRoundingMode(RoundingMode.DOWN);
             Double withdrawalAmountInINR = USDtoINRConversion(withdrawalAmount);
