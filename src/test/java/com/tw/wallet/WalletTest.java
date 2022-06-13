@@ -55,6 +55,26 @@ class WalletTest {
     }
 
     @Test
+    void shouldThrowExceptionWhenExistingMoneyIs20INRAndWithdrawalMoneyIs40INR() {
+        Throwable exception = assertThrows(CannotProceedException.class, () -> {
+            INRWallet inrWallet = new INRWallet();
+            Double actualAmount = inrWallet.withdrawWalletTransaction(20.00, "INR", 40.00);
+        });
+
+        assertEquals("Transaction cannot be completed: Not enough balance.", exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenExistingMoneyIs20INRAndWithdrawalMoneyIs40USD() {
+        Throwable exception = assertThrows(CannotProceedException.class, () -> {
+            INRWallet inrWallet = new INRWallet();
+            Double actualAmount = inrWallet.withdrawWalletTransaction(20.00, "USD", 40.00);
+        });
+
+        assertEquals("Transaction cannot be completed: Not enough balance.", exception.getMessage());
+    }
+
+    @Test
     void shouldReturn3dot86WhenWalletHas74dot85INRAnd1USDAnd149dot7INRWithPreferredCurrencyUSD() {
         Double walletBalance = 0.00;
 
@@ -65,7 +85,6 @@ class WalletTest {
         walletBalance = usdWallet.depositWalletTransaction(walletBalance, "INR", 149.7);
         assertEquals(3.86, walletBalance);
     }
-
 
 
     //USD Wallet Test
@@ -95,17 +114,6 @@ class WalletTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenExistingMoneyIs30USDAndWithdrawalMoneyIs40USD() {
-        try {
-            String existingCurrencyCode = "USD";
-            USDWallet usdWallet = new USDWallet();
-            Double actualAmount = usdWallet.withdrawWalletTransaction(30.00, "USD", 40.00);
-        } catch (CannotProceedException ex) {
-            assertEquals("Not enough Balance.", ex.getMessage());
-        }
-    }
-
-    @Test
     void shouldReturnMoney18dot6USDWhenExistingMoneyIs800USDAndWithdrawalMoneyIs200INR() throws CannotProceedException {
         String existingCurrencyCode = "USD";
         USDWallet usdWallet = new USDWallet();
@@ -131,6 +139,26 @@ class WalletTest {
         });
 
         assertEquals("Invalid input", exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenExistingMoneyIs20USDAndWithdrawalMoneyIs40USD() {
+        Throwable exception = assertThrows(CannotProceedException.class, () -> {
+            USDWallet usdWallet = new USDWallet();
+            Double actualAmount = usdWallet.withdrawWalletTransaction(20.00, "USD", 40.00);
+        });
+
+        assertEquals("Transaction cannot be completed: Not enough balance.", exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenExistingMoneyIs20USDAndWithdrawalMoneyIs2000INR() {
+        Throwable exception = assertThrows(CannotProceedException.class, () -> {
+            USDWallet usdWallet = new USDWallet();
+            Double actualAmount = usdWallet.withdrawWalletTransaction(20.00, "INR", 2000.00);
+        });
+
+        assertEquals("Transaction cannot be completed: Not enough balance.", exception.getMessage());
     }
 
     @Test

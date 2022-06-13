@@ -32,9 +32,12 @@ public class USDWallet implements Wallet {
             decimalFormat.setRoundingMode(RoundingMode.DOWN);
             Double withdrawalAmountInUSD = INRtoUSDConversion(withdrawalAmount);
             if (existingBalance < withdrawalAmountInUSD) {
-                throw new CannotProceedException("Not enough Balance.");
+                throw new CannotProceedException("Transaction cannot be completed: Not enough balance.");
             }
             return Double.valueOf(decimalFormat.format(existingBalance - withdrawalAmountInUSD));
+        }
+        if (existingBalance < withdrawalAmount) {
+            throw new CannotProceedException("Transaction cannot be completed: Not enough balance.");
         }
         return existingBalance - withdrawalAmount;
     }

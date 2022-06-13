@@ -29,9 +29,12 @@ public class INRWallet implements Wallet {
             decimalFormat.setRoundingMode(RoundingMode.DOWN);
             Double withdrawalAmountInINR = USDtoINRConversion(withdrawalAmount);
             if (existingBalance < withdrawalAmountInINR) {
-                throw new CannotProceedException("Not enough Balance.");
+                throw new CannotProceedException("Transaction cannot be completed: Not enough balance.");
             }
             return Double.valueOf(decimalFormat.format(existingBalance - withdrawalAmountInINR));
+        }
+        if (existingBalance < withdrawalAmount) {
+            throw new CannotProceedException("Transaction cannot be completed: Not enough balance.");
         }
         return existingBalance - withdrawalAmount;
     }
