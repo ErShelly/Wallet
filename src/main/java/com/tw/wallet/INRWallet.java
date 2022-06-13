@@ -8,38 +8,37 @@ public class INRWallet implements Wallet {
     DecimalFormat decimalFormat = new DecimalFormat("##.##");
 
     @Override
-    public Double depositWalletTransaction(Double existingBalance, String depositCurrencyCode, Double depositAmount) {
+    public double depositWalletTransaction(double existingBalance, String depositCurrencyCode, double depositAmount) {
         if(depositAmount == 0 || depositAmount < 0){
             throw new IllegalArgumentException("Invalid input");
         }
         if (depositCurrencyCode == "USD") {
             decimalFormat.setRoundingMode(RoundingMode.DOWN);
-            Double depositAmountInINR = USDtoINRConversion(depositAmount);
+            double depositAmountInINR = USDtoINRConversion(depositAmount);
             return Double.valueOf(decimalFormat.format(existingBalance + depositAmountInINR));
         }
         return existingBalance + depositAmount;
     }
 
     @Override
-    public Double withdrawWalletTransaction(Double existingBalance, String withdrawalCurrencyCode, Double withdrawalAmount) throws CannotProceedException {
+    public double withdrawWalletTransaction(double existingBalance, String withdrawalCurrencyCode, double withdrawalAmount) throws CannotProceedException {
         if(withdrawalAmount == 0 || withdrawalAmount < 0){
             throw new IllegalArgumentException("Invalid input");
         }
         if (withdrawalCurrencyCode == "USD") {
             decimalFormat.setRoundingMode(RoundingMode.DOWN);
-            Double withdrawalAmountInINR = USDtoINRConversion(withdrawalAmount);
+            double withdrawalAmountInINR = USDtoINRConversion(withdrawalAmount);
             if (existingBalance < withdrawalAmountInINR) {
                 throw new CannotProceedException("Transaction cannot be completed: Not enough balance.");
             }
             return Double.valueOf(decimalFormat.format(existingBalance - withdrawalAmountInINR));
-        }
-        if (existingBalance < withdrawalAmount) {
+        } else if (existingBalance < withdrawalAmount) {
             throw new CannotProceedException("Transaction cannot be completed: Not enough balance.");
         }
         return existingBalance - withdrawalAmount;
     }
 
-    private Double USDtoINRConversion(Double USDValue){
+    private double USDtoINRConversion(double USDValue){
         return  USDValue * 78.14;
     }
 }

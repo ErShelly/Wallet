@@ -4,6 +4,6 @@ import javax.naming.CannotProceedException;
 import java.text.DecimalFormat;
 
 public interface Wallet {
-    public Double depositWalletTransaction(Double existingBalance, String depositCurrencyCode , Double depositAmount);
-    public Double withdrawWalletTransaction(Double existingBalance, String withdrawalCurrencyCode , Double withdrawalAmount) throws CannotProceedException;
+    public double depositWalletTransaction(double existingBalance, String depositCurrencyCode , double depositAmount);
+    public double withdrawWalletTransaction(double existingBalance, String withdrawalCurrencyCode , double withdrawalAmount) throws CannotProceedException;
 }
