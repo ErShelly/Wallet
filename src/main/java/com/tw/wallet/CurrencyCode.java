@@ -1,22 +1,27 @@
 package com.tw.wallet;
 
-public class Currency {
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
+public class CurrencyCode {
+    DecimalFormat decimalFormat = new DecimalFormat("##.##");
     private final String displayName;
     private final String symbol;
     private final double baseFactor;
 
-    public static final Currency INR = new Currency("Indian Rupee", "₹", 1);//base currency
+    public static final CurrencyCode INR = new CurrencyCode("Indian Rupee", "₹", 1);//base currency
 
-    public static final Currency USD = new Currency("US Dollar", "$", 78.14);
+    public static final CurrencyCode USD = new CurrencyCode("US Dollar", "$", 78.14);
 
-    private Currency(String displayName, String symbol, double baseFactor) {
+    private CurrencyCode(String displayName, String symbol, double baseFactor) {
         this.displayName = displayName;
         this.symbol = symbol;
         this.baseFactor = baseFactor;
     }
 
-    private double convertToBaseCurrency(Double value){
-        return value * baseFactor;
+    public double convertToBaseCurrency(Double value){
+        decimalFormat.setRoundingMode(RoundingMode.DOWN);
+        return Double.valueOf(decimalFormat.format(value * baseFactor));
     }
 
 }

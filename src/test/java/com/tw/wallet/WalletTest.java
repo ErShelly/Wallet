@@ -12,33 +12,33 @@ class WalletTest {
     //INR Wallet Test
     @Test
     void shouldReturnMoney40INRWhenExistingMoneyIs30INRAndDepositMoneyIs10INR() {
-        String existingCurrencyCode = "INR";
-        INRWallet inrWallet = new INRWallet();
-        Double actualAmount = inrWallet.depositWalletTransaction(30.00, "INR", 10.00);
+        Wallet wallet = Wallet.createTransaction(30.00, CurrencyCode.INR, 10.00, CurrencyCode.INR);
+        double actualAmount = wallet.depositWalletTransaction();
+
         assertEquals(40, actualAmount);
     }
 
     @Test
     void shouldReturnMoney20INRWhenExistingMoneyIs30INRAndWithdrawalMoneyIs10INR() throws CannotProceedException {
-        String existingCurrencyCode = "INR";
-        INRWallet inrWallet = new INRWallet();
-        Double actualAmount = inrWallet.withdrawWalletTransaction(30.00, "INR", 10.00);
+        Wallet wallet = Wallet.createTransaction(30.00, CurrencyCode.INR, 10.00, CurrencyCode.INR);
+        double actualAmount = wallet.withdrawWalletTransaction();
+
         assertEquals(20, actualAmount);
     }
 
     @Test
     void shouldReturnMoney32dot55INRWhenExistingMoneyIs30INRAndDepositMoneyIs20USD() {
-        String existingCurrencyCode = "INR";
-        INRWallet inrWallet = new INRWallet();
-        Double actualAmount = inrWallet.depositWalletTransaction(30.00, "USD", 20.00);
+        Wallet wallet = Wallet.createTransaction(30.00, CurrencyCode.INR, 20.00, CurrencyCode.USD);
+        double actualAmount = wallet.depositWalletTransaction();
+
         assertEquals(1592.8, actualAmount);
     }
 
     @Test
     void shouldThrowInvalidInputExceptionWhenDepositAmountIsZeroForINRWallet() {
         Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            INRWallet inrWallet = new INRWallet();
-            Double actualAmount = inrWallet.depositWalletTransaction(30.00, "INR", 0.00);
+            Wallet wallet = Wallet.createTransaction(30.00, CurrencyCode.INR, 0.00, CurrencyCode.INR);
+            double actualAmount = wallet.depositWalletTransaction();
         });
 
         assertEquals("Invalid input", exception.getMessage());
@@ -47,8 +47,8 @@ class WalletTest {
     @Test
     void shouldThrowInvalidInputExceptionWhenDepositAmountIsNegativeForINRWallet() {
         Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            INRWallet inrWallet = new INRWallet();
-            Double actualAmount = inrWallet.depositWalletTransaction(30.00, "INR", -8.00);
+            Wallet wallet = Wallet.createTransaction(30.00, CurrencyCode.INR, -8.00, CurrencyCode.INR);
+            double actualAmount = wallet.depositWalletTransaction();
         });
 
         assertEquals("Invalid input", exception.getMessage());
@@ -57,8 +57,8 @@ class WalletTest {
     @Test
     void shouldThrowExceptionWhenExistingMoneyIs20INRAndWithdrawalMoneyIs40INR() {
         Throwable exception = assertThrows(CannotProceedException.class, () -> {
-            INRWallet inrWallet = new INRWallet();
-            Double actualAmount = inrWallet.withdrawWalletTransaction(20.00, "INR", 40.00);
+            Wallet wallet = Wallet.createTransaction(20.00, CurrencyCode.INR, 40.00, CurrencyCode.INR);
+            double actualAmount = wallet.withdrawWalletTransaction();
         });
 
         assertEquals("Transaction cannot be completed: Not enough balance.", exception.getMessage());
@@ -67,85 +67,63 @@ class WalletTest {
     @Test
     void shouldThrowExceptionWhenExistingMoneyIs20INRAndWithdrawalMoneyIs40USD() {
         Throwable exception = assertThrows(CannotProceedException.class, () -> {
-            INRWallet inrWallet = new INRWallet();
-            Double actualAmount = inrWallet.withdrawWalletTransaction(20.00, "USD", 40.00);
+            Wallet wallet = Wallet.createTransaction(20.00, CurrencyCode.INR, 40.00, CurrencyCode.USD);
+            double actualAmount = wallet.withdrawWalletTransaction();
         });
 
         assertEquals("Transaction cannot be completed: Not enough balance.", exception.getMessage());
     }
 
-    @Test
+    /*@Test
     void shouldReturn3dot86WhenWalletHas74dot85INRAnd1USDAnd149dot7INRWithPreferredCurrencyUSD() {
-        Double walletBalance = 0.00;
+        double walletBalance = 0.00;
 
         String preferredCurrencyCode = "USD";
-        USDWallet usdWallet = new USDWallet();
-        walletBalance = usdWallet.depositWalletTransaction(walletBalance, "INR", 74.85);
-        walletBalance = usdWallet.depositWalletTransaction(walletBalance, "USD", 1.00);
-        walletBalance = usdWallet.depositWalletTransaction(walletBalance, "INR", 149.7);
+
+        Wallet transaction74dot85INR = Wallet.createTransaction(walletBalance,CurrencyCode.INR,40.00, CurrencyCode.INR);
+        Wallet transaction1USD = Wallet.createTransaction(walletBalance,CurrencyCode.INR,1.00, CurrencyCode.USD);
+        Wallet transaction149dot7 = Wallet.createTransaction(walletBalance,CurrencyCode.INR,149.7, CurrencyCode.INR);
+
+        walletBalance = transaction74dot85INR.depositWalletTransaction() + transaction1USD.depositWalletTransaction() + transaction149dot7.depositWalletTransaction();
         assertEquals(3.86, walletBalance);
-    }
-
-
-    //USD Wallet Test
+    }*/
 
     @Test
-    void shouldReturnMoney60USDWhenExistingMoneyIs20USDAndDepositMoneyIs40USD() {
-        String existingCurrencyCode = "USD";
-        USDWallet usdWallet = new USDWallet();
-        Double actualAmount = usdWallet.depositWalletTransaction(30.00, "USD", 10.00);
-        assertEquals(40, actualAmount);
+    void shouldReturnMoney546dot98INRWhenExistingMoneyIs2USDAndDepositMoneyIs4USD() {
+        Wallet wallet = Wallet.createTransaction(2.00, CurrencyCode.USD, 5.00, CurrencyCode.USD);
+        double actualAmount = wallet.depositWalletTransaction();
+        assertEquals(546.98, actualAmount);
     }
 
     @Test
-    void shouldReturnMoney30USDWhenExistingMoneyIs40USDAndWithdrawalMoneyIs10USD() throws CannotProceedException {
-        String existingCurrencyCode = "USD";
-        USDWallet usdWallet = new USDWallet();
-        Double actualAmount = usdWallet.withdrawWalletTransaction(30.00, "USD", 10.00);
-        assertEquals(20, actualAmount);
+    void shouldReturnMoney781dot4WhenExistingMoneyIs20USDAndWithdrawalMoneyIs10USD() throws CannotProceedException {
+        Wallet wallet = Wallet.createTransaction(20.00, CurrencyCode.USD, 10.00, CurrencyCode.USD);
+        double actualAmount = wallet.withdrawWalletTransaction();
+
+        assertEquals(781.4, actualAmount);
     }
 
     @Test
-    void shouldReturnMoney1592dot80USDWhenExistingMoneyIs30USDAndDepositMoneyIs2000INR() {
-        String existingCurrencyCode = "USD";
-        USDWallet usdWallet = new USDWallet();
-        Double actualAmount = usdWallet.depositWalletTransaction(30.00, "INR", 2000.00);
-        assertEquals(55.59, actualAmount);
+    void shouldReturnMoney254dot42WhenExistingMoneyIs3USDAndDepositMoneyIs20INR() {
+        Wallet wallet = Wallet.createTransaction(3.00, CurrencyCode.USD, 20.00, CurrencyCode.INR);
+        double actualAmount = wallet.depositWalletTransaction();
+
+        assertEquals(254.42, actualAmount);
     }
 
     @Test
-    void shouldReturnMoney18dot6USDWhenExistingMoneyIs800USDAndWithdrawalMoneyIs200INR() throws CannotProceedException {
-        String existingCurrencyCode = "USD";
-        USDWallet usdWallet = new USDWallet();
-        Double actualAmount = usdWallet.withdrawWalletTransaction(800.00, "INR", 200.00);
-        assertEquals(797.44, actualAmount);
-    }
+    void shouldReturnMoney212dot56WhenExistingMoneyIs4USDAndWithdrawalMoneyIs100INR() throws CannotProceedException {
+        Wallet wallet = Wallet.createTransaction(4.00, CurrencyCode.USD, 100.00, CurrencyCode.INR);
+        double actualAmount = wallet.withdrawWalletTransaction();
 
-    @Test
-    void shouldThrowInvalidInputExceptionWhenDepositAmountIsZeroForUSDWallet() {
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            USDWallet usdWallet = new USDWallet();
-            Double actualAmount = usdWallet.depositWalletTransaction(30.00, "INR", 0.00);
-        });
-
-        assertEquals("Invalid input", exception.getMessage());
-    }
-
-    @Test
-    void shouldThrowInvalidInputExceptionWhenDepositAmountIsNegativeForUSDWallet() {
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            USDWallet usdWallet = new USDWallet();
-            Double actualAmount = usdWallet.depositWalletTransaction(30.00, "USD", -8.00);
-        });
-
-        assertEquals("Invalid input", exception.getMessage());
+        assertEquals(212.56, actualAmount);
     }
 
     @Test
     void shouldThrowExceptionWhenExistingMoneyIs20USDAndWithdrawalMoneyIs40USD() {
         Throwable exception = assertThrows(CannotProceedException.class, () -> {
-            USDWallet usdWallet = new USDWallet();
-            Double actualAmount = usdWallet.withdrawWalletTransaction(20.00, "USD", 40.00);
+            Wallet wallet = Wallet.createTransaction(20.00, CurrencyCode.USD, 40.00, CurrencyCode.USD);
+            double actualAmount = wallet.withdrawWalletTransaction();
         });
 
         assertEquals("Transaction cannot be completed: Not enough balance.", exception.getMessage());
@@ -154,8 +132,8 @@ class WalletTest {
     @Test
     void shouldThrowExceptionWhenExistingMoneyIs20USDAndWithdrawalMoneyIs2000INR() {
         Throwable exception = assertThrows(CannotProceedException.class, () -> {
-            USDWallet usdWallet = new USDWallet();
-            Double actualAmount = usdWallet.withdrawWalletTransaction(20.00, "INR", 2000.00);
+            Wallet wallet = Wallet.createTransaction(20.00, CurrencyCode.USD, 2000.00, CurrencyCode.INR);
+            double actualAmount = wallet.withdrawWalletTransaction();
         });
 
         assertEquals("Transaction cannot be completed: Not enough balance.", exception.getMessage());
@@ -163,11 +141,12 @@ class WalletTest {
 
     @Test
     void shouldReturn128dot14WhenWalletHas50INRAnd1USDWithPreferredCurrencyINR() {
-        Double walletBalance = 0.00;
+        double walletBalance = 0.00;
 
-        INRWallet inrWallet = new INRWallet();
-        walletBalance = inrWallet.depositWalletTransaction(walletBalance, "INR", 50.00);
-        walletBalance = inrWallet.depositWalletTransaction(walletBalance, "USD", 1.00);
+        Wallet transaction50INR = Wallet.createTransaction(walletBalance, CurrencyCode.INR, 50.00, CurrencyCode.INR);
+        Wallet transaction1USD = Wallet.createTransaction(walletBalance, CurrencyCode.INR, 1.00, CurrencyCode.USD);
+
+        walletBalance = transaction50INR.depositWalletTransaction() + transaction1USD.depositWalletTransaction();
         assertEquals(128.14, walletBalance);
     }
 }
