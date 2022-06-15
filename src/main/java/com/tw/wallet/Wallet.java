@@ -6,40 +6,40 @@ import java.util.Currency;
 
 public class Wallet {
 
-    private final double existingBalance;
+    private final double walletBalance;
     private final double transactionAmount;
     private final CurrencyCode transactionCurrency;
-    private final CurrencyCode existingBalanceCurrencyCode;
-    private final double convertedExistingBalance;
+    private final CurrencyCode walletBalanceCurrencyCode;
+    private final double convertedWalletBalance;
     private final double convertedTransactionAmount;
 
-    private Wallet(double existingBalance, CurrencyCode existingBalanceCurrencyCode, double transactionAmount, CurrencyCode transactionCurrency) {
-        this.existingBalance = existingBalance;
-        this.existingBalanceCurrencyCode = existingBalanceCurrencyCode;
-        this.convertedExistingBalance = existingBalanceCurrencyCode.convertToBaseCurrency(existingBalance);
+    private Wallet(double walletBalance, CurrencyCode walletBalanceCurrencyCode, double transactionAmount, CurrencyCode transactionCurrency) {
+        this.walletBalance = walletBalance;
+        this.walletBalanceCurrencyCode = walletBalanceCurrencyCode;
+        this.convertedWalletBalance = walletBalanceCurrencyCode.convertToBaseCurrency(walletBalance);
         this.transactionAmount = transactionAmount;
         this.transactionCurrency = transactionCurrency;
         this.convertedTransactionAmount = transactionCurrency.convertToBaseCurrency(transactionAmount);
     }
 
-    public static Wallet createTransaction(double existingBalance, CurrencyCode existingBalanceCurrencyCode, double transactionAmount, CurrencyCode transactionCurrency) {
-        return new Wallet(existingBalance, existingBalanceCurrencyCode, transactionAmount, transactionCurrency);
+    public static Wallet createTransaction(double walletBalance, CurrencyCode walletBalanceCurrencyCode, double transactionAmount, CurrencyCode transactionCurrency) {
+        return new Wallet(walletBalance, walletBalanceCurrencyCode, transactionAmount, transactionCurrency);
     }
 
     public double depositWalletTransaction() {
         if (transactionAmount == 0 || transactionAmount < 0) {
             throw new IllegalArgumentException("Invalid input");
         }
-        return convertedExistingBalance + convertedTransactionAmount;
+        return convertedWalletBalance + convertedTransactionAmount;
     }
 
     public double withdrawWalletTransaction() throws CannotProceedException {
         if (transactionAmount == 0 || transactionAmount < 0) {
             throw new IllegalArgumentException("Invalid input");
-        } else if (convertedExistingBalance < convertedTransactionAmount) {
+        } else if (convertedWalletBalance < convertedTransactionAmount) {
             throw new CannotProceedException("Transaction cannot be completed: Not enough balance.");
         }
-        return convertedExistingBalance - convertedTransactionAmount;
+        return convertedWalletBalance - convertedTransactionAmount;
     }
 
     public double balanceInPreferredCurrency(double baseValue, CurrencyCode currencyCode){
