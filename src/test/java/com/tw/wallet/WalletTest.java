@@ -74,19 +74,24 @@ class WalletTest {
         assertEquals("Transaction cannot be completed: Not enough balance.", exception.getMessage());
     }
 
-    /*@Test
+    @Test
     void shouldReturn3dot86WhenWalletHas74dot85INRAnd1USDAnd149dot7INRWithPreferredCurrencyUSD() {
         double walletBalance = 0.00;
 
         String preferredCurrencyCode = "USD";
 
-        Wallet transaction74dot85INR = Wallet.createTransaction(walletBalance,CurrencyCode.INR,40.00, CurrencyCode.INR);
-        Wallet transaction1USD = Wallet.createTransaction(walletBalance,CurrencyCode.INR,1.00, CurrencyCode.USD);
-        Wallet transaction149dot7 = Wallet.createTransaction(walletBalance,CurrencyCode.INR,149.7, CurrencyCode.INR);
+        Wallet transaction74dot85INR = Wallet.createTransaction(walletBalance, CurrencyCode.INR, 74.85, CurrencyCode.INR);
+        walletBalance = transaction74dot85INR.depositWalletTransaction();
 
-        walletBalance = transaction74dot85INR.depositWalletTransaction() + transaction1USD.depositWalletTransaction() + transaction149dot7.depositWalletTransaction();
-        assertEquals(3.86, walletBalance);
-    }*/
+        Wallet transaction1USD = Wallet.createTransaction(walletBalance, CurrencyCode.INR, 1.00, CurrencyCode.USD);
+        walletBalance = transaction1USD.depositWalletTransaction();
+
+        Wallet transaction149dot7 = Wallet.createTransaction(walletBalance, CurrencyCode.INR, 149.7, CurrencyCode.INR);
+        walletBalance = transaction149dot7.depositWalletTransaction();
+
+        double balanceInUSD = transaction149dot7.balanceInPreferredCurrency(walletBalance, CurrencyCode.USD);
+        assertEquals(3.87, balanceInUSD);
+    }
 
     @Test
     void shouldReturnMoney546dot98INRWhenExistingMoneyIs2USDAndDepositMoneyIs4USD() {

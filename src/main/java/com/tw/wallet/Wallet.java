@@ -41,4 +41,11 @@ public class Wallet {
         }
         return convertedExistingBalance - convertedTransactionAmount;
     }
+
+    public double balanceInPreferredCurrency(double baseValue, CurrencyCode currencyCode){
+        if (currencyCode == CurrencyCode.USD){
+            return (currencyCode.convertToUSD(baseValue));
+        }
+        return baseValue;
+    }
 }
