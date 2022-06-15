@@ -19,9 +19,8 @@ public class CurrencyCode {
         this.baseFactor = baseFactor;
     }
 
-    public double convertToBaseCurrency(Double value){
+    public double convertToBaseCurrency(double value) {
         decimalFormat.setRoundingMode(RoundingMode.DOWN);
         return Double.valueOf(decimalFormat.format(value * baseFactor));
     }
-
 }
