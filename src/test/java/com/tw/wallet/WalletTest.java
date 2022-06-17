@@ -78,7 +78,6 @@ class WalletTest {
     void shouldReturn3dot86USDWhenWalletHas74dot85INRAnd1USDAnd149dot7INR() throws WalletException {
         double walletBalance = 0d;
 
-        String preferredCurrencyCode = "USD";
         Wallet wallet = Wallet.createWallet(walletBalance, CurrencyCode.USD);
 
         wallet.deposit(74.85, CurrencyCode.INR);
@@ -145,7 +144,6 @@ class WalletTest {
     void shouldReturn128dot14INRWhenWalletHas50INRAnd1USD() throws WalletException {
         double walletBalance = 0d;
 
-        String preferredCurrencyCode = "USD";
         Wallet wallet = Wallet.createWallet(walletBalance, CurrencyCode.USD);
 
         wallet.deposit(50d, CurrencyCode.INR);
