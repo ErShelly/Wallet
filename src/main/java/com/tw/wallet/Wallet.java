@@ -6,44 +6,44 @@ import java.util.Currency;
 
 public class Wallet {
 
-    private final double walletBalance;
-    private final double transactionAmount;
-    private final CurrencyCode transactionCurrency;
-    private final CurrencyCode walletBalanceCurrencyCode;
-    private final double convertedWalletBalance;
-    private final double convertedTransactionAmount;
+    private double balance;
+    private final CurrencyCode currencyCode;
+    private double convertedWalletBalance;
 
-    private Wallet(double walletBalance, CurrencyCode walletBalanceCurrencyCode, double transactionAmount, CurrencyCode transactionCurrency) {
-        this.walletBalance = walletBalance;
-        this.walletBalanceCurrencyCode = walletBalanceCurrencyCode;
-        this.convertedWalletBalance = walletBalanceCurrencyCode.convertToBaseCurrency(walletBalance);
-        this.transactionAmount = transactionAmount;
-        this.transactionCurrency = transactionCurrency;
-        this.convertedTransactionAmount = transactionCurrency.convertToBaseCurrency(transactionAmount);
+    private Wallet(double balance, CurrencyCode currencyCode) {
+        this.balance = balance;
+        this.currencyCode = currencyCode;
+        this.convertedWalletBalance = currencyCode.convertToBaseCurrency(balance);
     }
 
-    public static Wallet createTransaction(double walletBalance, CurrencyCode walletBalanceCurrencyCode, double transactionAmount, CurrencyCode transactionCurrency) {
-        return new Wallet(walletBalance, walletBalanceCurrencyCode, transactionAmount, transactionCurrency);
+    public static Wallet createWallet(double balance, CurrencyCode currencyCode) {
+        return new Wallet(balance, currencyCode);
     }
 
-    public double depositWalletTransaction() {
+    public double getBalance() {
+        return balance;
+    }
+
+    public void deposit(double transactionAmount, CurrencyCode transactionCurrency) {
         if (transactionAmount == 0 || transactionAmount < 0) {
             throw new IllegalArgumentException("Invalid input");
         }
-        return convertedWalletBalance + convertedTransactionAmount;
+        balance = convertedWalletBalance + transactionCurrency.convertToBaseCurrency(transactionAmount);
+        convertedWalletBalance = balance;
     }
 
-    public double withdrawWalletTransaction() throws CannotProceedException {
+    public void withdraw(double transactionAmount, CurrencyCode transactionCurrency) throws CannotProceedException {
         if (transactionAmount == 0 || transactionAmount < 0) {
             throw new IllegalArgumentException("Invalid input");
-        } else if (convertedWalletBalance < convertedTransactionAmount) {
+        } else if (convertedWalletBalance < transactionCurrency.convertToBaseCurrency(transactionAmount)) {
             throw new CannotProceedException("Transaction cannot be completed: Not enough balance.");
         }
-        return convertedWalletBalance - convertedTransactionAmount;
+        balance = convertedWalletBalance - transactionCurrency.convertToBaseCurrency(transactionAmount);
+        convertedWalletBalance = balance;
     }
 
-    public double balanceInPreferredCurrency(double baseValue, CurrencyCode currencyCode){
-        if (currencyCode == CurrencyCode.USD){
+    public double balanceInPreferredCurrency(double baseValue, CurrencyCode currencyCode) {
+        if (currencyCode == CurrencyCode.USD) {
             return (currencyCode.convertToUSD(baseValue));
         }
         return baseValue;
