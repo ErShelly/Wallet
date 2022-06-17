@@ -1,9 +1,5 @@
 package com.tw.wallet;
 
-import javax.naming.CannotProceedException;
-import java.math.RoundingMode;
-import java.util.Currency;
-
 public class Wallet {
 
     private double balance;
@@ -24,19 +20,19 @@ public class Wallet {
         return balance;
     }
 
-    public void deposit(double transactionAmount, CurrencyCode transactionCurrency) {
+    public void deposit(double transactionAmount, CurrencyCode transactionCurrency) throws WalletException {
         if (transactionAmount == 0 || transactionAmount < 0) {
-            throw new IllegalArgumentException("Invalid input");
+            throw new WalletException(WalletExceptionMessage.INVALID_INPUT);
         }
         balance = convertedWalletBalance + transactionCurrency.convertToBaseCurrency(transactionAmount);
         convertedWalletBalance = balance;
     }
 
-    public void withdraw(double transactionAmount, CurrencyCode transactionCurrency) throws CannotProceedException {
+    public void withdraw(double transactionAmount, CurrencyCode transactionCurrency) throws WalletException {
         if (transactionAmount == 0 || transactionAmount < 0) {
-            throw new IllegalArgumentException("Invalid input");
+            throw new WalletException(WalletExceptionMessage.INVALID_INPUT);
         } else if (convertedWalletBalance < transactionCurrency.convertToBaseCurrency(transactionAmount)) {
-            throw new CannotProceedException("Transaction cannot be completed: Not enough balance.");
+            throw new WalletException(WalletExceptionMessage.NOT_ENOUGH_BALANCE);
         }
         balance = convertedWalletBalance - transactionCurrency.convertToBaseCurrency(transactionAmount);
         convertedWalletBalance = balance;

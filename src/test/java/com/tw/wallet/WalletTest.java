@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class WalletTest {
     //INR Wallet Test
     @Test
-    void shouldReturn40INRWhenBalanceIs30INRAndDepositIs10INR() {
+    void shouldReturn40INRWhenBalanceIs30INRAndDepositIs10INR() throws WalletException {
         Wallet wallet = Wallet.createWallet(30d, CurrencyCode.INR);
         wallet.deposit(10d, CurrencyCode.INR);
 
@@ -19,7 +19,7 @@ class WalletTest {
     }
 
     @Test
-    void shouldReturn20INRWhenBalanceIs30INRAndWithdrawIs10INR() throws CannotProceedException {
+    void shouldReturn20INRWhenBalanceIs30INRAndWithdrawIs10INR() throws WalletException {
         Wallet wallet = Wallet.createWallet(30d, CurrencyCode.INR);
         wallet.withdraw(10d, CurrencyCode.INR);
 
@@ -27,7 +27,7 @@ class WalletTest {
     }
 
     @Test
-    void shouldReturn32dot55INRWhenBalanceIs30INRAndDepositIs20USD() {
+    void shouldReturn32dot55INRWhenBalanceIs30INRAndDepositIs20USD() throws WalletException {
         Wallet wallet = Wallet.createWallet(30d, CurrencyCode.INR);
         wallet.deposit(20d, CurrencyCode.USD);
 
@@ -36,46 +36,46 @@ class WalletTest {
 
     @Test
     void shouldThrowInvalidInputExceptionWhenDepositAmountIsZero() {
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
+        Throwable exception = assertThrows(WalletException.class, () -> {
             Wallet wallet = Wallet.createWallet(30d, CurrencyCode.INR);
             wallet.deposit(0d, CurrencyCode.USD);
         });
 
-        assertEquals("Invalid input", exception.getMessage());
+        assertEquals(WalletExceptionMessage.INVALID_INPUT, exception.getMessage());
     }
 
     @Test
     void shouldThrowInvalidInputExceptionWhenDepositAmountIsNegative() {
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
+        Throwable exception = assertThrows(WalletException.class, () -> {
             Wallet wallet = Wallet.createWallet(30d, CurrencyCode.INR);
             wallet.deposit(-8.0d, CurrencyCode.USD);
         });
 
-        assertEquals("Invalid input", exception.getMessage());
+        assertEquals(WalletExceptionMessage.INVALID_INPUT, exception.getMessage());
     }
 
     @Test
     void shouldThrowExceptionWhenBalanceIs20INRAndWithdrawIs40INR() {
-        Throwable exception = assertThrows(CannotProceedException.class, () -> {
+        Throwable exception = assertThrows(WalletException.class, () -> {
             Wallet wallet = Wallet.createWallet(30d, CurrencyCode.INR);
             wallet.withdraw(40d, CurrencyCode.INR);
         });
 
-        assertEquals("Transaction cannot be completed: Not enough balance.", exception.getMessage());
+        assertEquals(WalletExceptionMessage.NOT_ENOUGH_BALANCE, exception.getMessage());
     }
 
     @Test
     void shouldThrowExceptionWhenBalanceIs20INRAndWithdrawIs40USD() {
-        Throwable exception = assertThrows(CannotProceedException.class, () -> {
+        Throwable exception = assertThrows(WalletException.class, () -> {
             Wallet wallet = Wallet.createWallet(20d, CurrencyCode.USD);
             wallet.withdraw(40d, CurrencyCode.USD);
         });
 
-        assertEquals("Transaction cannot be completed: Not enough balance.", exception.getMessage());
+        assertEquals(WalletExceptionMessage.NOT_ENOUGH_BALANCE, exception.getMessage());
     }
 
     @Test
-    void shouldReturn3dot86USDWhenWalletHas74dot85INRAnd1USDAnd149dot7INR() {
+    void shouldReturn3dot86USDWhenWalletHas74dot85INRAnd1USDAnd149dot7INR() throws WalletException {
         double walletBalance = 0d;
 
         String preferredCurrencyCode = "USD";
@@ -90,7 +90,7 @@ class WalletTest {
     }
 
     @Test
-    void shouldReturn546dot98INRWhenBalanceIs2USDAndDepositIs3USD() {
+    void shouldReturn546dot98INRWhenBalanceIs2USDAndDepositIs3USD() throws WalletException {
         Wallet wallet = Wallet.createWallet(2d, CurrencyCode.USD);
         wallet.deposit(3d, CurrencyCode.USD);
 
@@ -98,7 +98,7 @@ class WalletTest {
     }
 
     @Test
-    void shouldReturn781dot4WhenBalanceIs20USDAndWithdrawIs10USD() throws CannotProceedException {
+    void shouldReturn781dot4WhenBalanceIs20USDAndWithdrawIs10USD() throws WalletException {
         Wallet wallet = Wallet.createWallet(20d, CurrencyCode.USD);
         wallet.withdraw(10d, CurrencyCode.USD);
 
@@ -106,7 +106,7 @@ class WalletTest {
     }
 
     @Test
-    void shouldReturnMoney254dot42WhenBalanceIs3USDAndDepositIs20INR() {
+    void shouldReturnMoney254dot42WhenBalanceIs3USDAndDepositIs20INR() throws WalletException {
         Wallet wallet = Wallet.createWallet(3d, CurrencyCode.USD);
         wallet.deposit(20d, CurrencyCode.INR);
 
@@ -114,7 +114,7 @@ class WalletTest {
     }
 
     @Test
-    void shouldReturn212dot56WhenBalanceIs4USDAndWithdrawalIs100INR() throws CannotProceedException {
+    void shouldReturn212dot56WhenBalanceIs4USDAndWithdrawalIs100INR() throws WalletException {
         Wallet wallet = Wallet.createWallet(4d, CurrencyCode.USD);
         wallet.withdraw(100d, CurrencyCode.INR);
 
@@ -123,26 +123,26 @@ class WalletTest {
 
     @Test
     void shouldThrowExceptionWhenBalanceIs20USDAndWithdrawIs40USD() {
-        Throwable exception = assertThrows(CannotProceedException.class, () -> {
+        Throwable exception = assertThrows(WalletException.class, () -> {
             Wallet wallet = Wallet.createWallet(20d, CurrencyCode.USD);
             wallet.withdraw(40d, CurrencyCode.USD);
         });
 
-        assertEquals("Transaction cannot be completed: Not enough balance.", exception.getMessage());
+        assertEquals(WalletExceptionMessage.NOT_ENOUGH_BALANCE, exception.getMessage());
     }
 
     @Test
     void shouldThrowExceptionWhenBalanceIs20USDAndWithdrawIs2000INR() {
-        Throwable exception = assertThrows(CannotProceedException.class, () -> {
+        Throwable exception = assertThrows(WalletException.class, () -> {
             Wallet wallet = Wallet.createWallet(20d, CurrencyCode.USD);
             wallet.withdraw(2000d, CurrencyCode.INR);
         });
 
-        assertEquals("Transaction cannot be completed: Not enough balance.", exception.getMessage());
+        assertEquals(WalletExceptionMessage.NOT_ENOUGH_BALANCE, exception.getMessage());
     }
 
     @Test
-    void shouldReturn128dot14INRWhenWalletHas50INRAnd1USD() {
+    void shouldReturn128dot14INRWhenWalletHas50INRAnd1USD() throws WalletException {
         double walletBalance = 0d;
 
         String preferredCurrencyCode = "USD";
