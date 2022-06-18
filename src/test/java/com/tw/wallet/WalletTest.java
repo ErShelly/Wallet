@@ -1,15 +1,10 @@
 package com.tw.wallet;
 
-//import java.util.*;
-
 import org.junit.jupiter.api.Test;
-
-import javax.naming.CannotProceedException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class WalletTest {
-    //INR Wallet Test
     @Test
     void shouldReturn40INRWhenBalanceIs30INRAndDepositIs10INR() throws WalletException {
         Wallet wallet = Wallet.createWallet(30d, CurrencyCode.INR);
