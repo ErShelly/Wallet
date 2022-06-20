@@ -26,7 +26,8 @@ public class Wallet {
     public void withdraw(double transactionAmount, CurrencyCode transactionCurrency) throws WalletException {
         if (transactionAmount == 0 || transactionAmount < 0) {
             throw new WalletException(WalletExceptionMessage.INVALID_INPUT);
-        } else if (balance < transactionCurrency.convertToBaseCurrency(transactionAmount)) {
+        }
+        if (balance < transactionCurrency.convertToBaseCurrency(transactionAmount)) {
             throw new WalletException(WalletExceptionMessage.NOT_ENOUGH_BALANCE);
         }
         balance = balance - transactionCurrency.convertToBaseCurrency(transactionAmount);
