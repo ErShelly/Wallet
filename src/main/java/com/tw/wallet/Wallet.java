@@ -3,9 +3,11 @@ package com.tw.wallet;
 public class Wallet {
 
     private double balance;
+    private CurrencyCode baseCurrency;
 
     private Wallet(double balance, CurrencyCode currencyCode) {
         this.balance = currencyCode.convertToBaseCurrency(balance);
+        this.baseCurrency = CurrencyCode.INR;
     }
 
     public static Wallet createWallet(double balance, CurrencyCode currencyCode) {
