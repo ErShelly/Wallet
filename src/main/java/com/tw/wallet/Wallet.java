@@ -5,34 +5,34 @@ public class Wallet {
     private double balance;
     private CurrencyCode baseCurrency;
 
-    private Wallet(double balance, CurrencyCode currencyCode) {
-        this.balance = currencyCode.convertToBaseCurrency(balance);
+    private Wallet(Money money) {
+        this.balance = money.currencyCode.convertToBaseCurrency(money.amount);
         this.baseCurrency = CurrencyCode.INR;
     }
 
-    public static Wallet createWallet(double balance, CurrencyCode currencyCode) {
-        return new Wallet(balance, currencyCode);
+    public static Wallet createWallet(Money money) {
+        return new Wallet(money);
     }
 
     public double getBalance() {
         return balance;
     }
 
-    public void deposit(double transactionAmount, CurrencyCode transactionCurrency) throws WalletException {
-        if (transactionAmount == 0 || transactionAmount < 0) {
+    public void deposit(Money depositMoney) throws WalletException {
+        if (depositMoney.amount == 0 || depositMoney.amount < 0) {
             throw new WalletException(WalletExceptionMessage.INVALID_INPUT);
         }
-        balance = balance + transactionCurrency.convertToBaseCurrency(transactionAmount);
+        balance = balance + depositMoney.currencyCode.convertToBaseCurrency(depositMoney.amount);
     }
 
-    public void withdraw(double transactionAmount, CurrencyCode transactionCurrency) throws WalletException {
-        if (transactionAmount == 0 || transactionAmount < 0) {
+    public void withdraw(Money withdrawalMoney) throws WalletException {
+        if (withdrawalMoney.amount == 0 || withdrawalMoney.amount < 0) {
             throw new WalletException(WalletExceptionMessage.INVALID_INPUT);
         }
-        if (balance < transactionCurrency.convertToBaseCurrency(transactionAmount)) {
+        if (balance < withdrawalMoney.currencyCode.convertToBaseCurrency(withdrawalMoney.amount)) {
             throw new WalletException(WalletExceptionMessage.NOT_ENOUGH_BALANCE);
         }
-        balance = balance - transactionCurrency.convertToBaseCurrency(transactionAmount);
+        balance = balance - withdrawalMoney.currencyCode.convertToBaseCurrency(withdrawalMoney.amount);
     }
 
     public double balanceInPreferredCurrency(double baseValue, CurrencyCode currencyCode) {
