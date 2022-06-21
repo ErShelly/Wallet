@@ -8,4 +8,8 @@ public class Money {
         this.amount = amount;
         this.currencyCode = currencyCode;
     }
+
+    public static Money createMoney(double amount, CurrencyCode currencyCode){
+        return new Money(amount, currencyCode);
+    }
 }
