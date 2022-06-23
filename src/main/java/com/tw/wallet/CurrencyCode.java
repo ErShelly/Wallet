@@ -19,6 +19,10 @@ public class CurrencyCode {
         this.baseFactor = baseFactor;
     }
 
+    public CurrencyCode getBaseCurrency(){
+        return CurrencyCode.INR;
+    }
+
     public double convertToBaseCurrency(double value) {
         decimalFormat.setRoundingMode(RoundingMode.DOWN);
         return Double.valueOf(decimalFormat.format(value * baseFactor));

@@ -2,43 +2,31 @@ package com.tw.wallet;
 
 public class Wallet {
 
-    private double balance;
-    private CurrencyCode baseCurrency;
+    private Money balance;
 
     private Wallet(Money money) {
-        this.balance = money.currencyCode.convertToBaseCurrency(money.amount);
-        this.baseCurrency = CurrencyCode.INR;
+        this.balance = money;
     }
 
     public static Wallet createWallet(Money money) {
+        money.amount = money.currencyCode.convertToBaseCurrency(money.amount);
+        money.currencyCode = money.currencyCode.getBaseCurrency();
         return new Wallet(money);
     }
 
     public double getBalance() {
-        return balance;
+        return balance.amount;
     }
 
     public void deposit(Money depositMoney) throws WalletException {
-        if (depositMoney.amount == 0 || depositMoney.amount < 0) {
-            throw new WalletException(WalletExceptionMessage.INVALID_INPUT);
-        }
-        balance = balance + depositMoney.currencyCode.convertToBaseCurrency(depositMoney.amount);
+        balance.addMoney(depositMoney);
     }
 
     public void withdraw(Money withdrawalMoney) throws WalletException {
-        if (withdrawalMoney.amount == 0 || withdrawalMoney.amount < 0) {
-            throw new WalletException(WalletExceptionMessage.INVALID_INPUT);
-        }
-        if (balance < withdrawalMoney.currencyCode.convertToBaseCurrency(withdrawalMoney.amount)) {
-            throw new WalletException(WalletExceptionMessage.NOT_ENOUGH_BALANCE);
-        }
-        balance = balance - withdrawalMoney.currencyCode.convertToBaseCurrency(withdrawalMoney.amount);
+        balance.withdrawMoney(withdrawalMoney);
     }
 
-    public double balanceInPreferredCurrency(double baseValue, CurrencyCode currencyCode) {
-        if (currencyCode == CurrencyCode.USD) {
-            return (currencyCode.convertToUSD(baseValue));
-        }
-        return baseValue;
+    public double balanceInPreferredCurrency(Wallet wallet, CurrencyCode currencyCode) {
+        return Money.moneyInPreferredCurrency(wallet.balance, currencyCode);
     }
 }

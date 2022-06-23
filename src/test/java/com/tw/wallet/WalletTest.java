@@ -85,7 +85,7 @@ class WalletTest {
         wallet.deposit(Money.createMoney(1d, CurrencyCode.USD));
         wallet.deposit(Money.createMoney(149.7, CurrencyCode.INR));
 
-        double balanceInUSD = wallet.balanceInPreferredCurrency(wallet.getBalance(), CurrencyCode.USD);
+        double balanceInUSD = wallet.balanceInPreferredCurrency(wallet, CurrencyCode.USD);
 
         assertEquals(3.87, balanceInUSD);
     }
