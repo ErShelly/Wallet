@@ -1,6 +1,10 @@
 package com.tw.wallet;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 public class Money {
+    DecimalFormat decimalFormat = new DecimalFormat("0.00");
     public double amount;
     public CurrencyCode currencyCode;
 
@@ -13,21 +17,30 @@ public class Money {
         return new Money(amount, currencyCode);
     }
 
-    public void addMoney(Money money) throws WalletException {
-        if (money.amount == 0 || money.amount < 0) {
+    public Money addMoney(Money money) throws WalletException {
+        if (money.amount <= 0) {
             throw new WalletException(WalletExceptionMessage.INVALID_INPUT);
         }
-        this.amount = this.amount + money.currencyCode.convertToBaseCurrency(money.amount);
+
+        double newAmount = this.currencyCode.convertToBaseCurrency(this.amount) + money.currencyCode.convertToBaseCurrency(money.amount);
+        return new Money(formatDouble(newAmount), CurrencyCode.INR);
+
     }
 
-    public void withdrawMoney(Money withdrawalMoney) throws WalletException {
-        if (withdrawalMoney.amount == 0 || withdrawalMoney.amount < 0) {
+    public Money withdrawMoney(Money withdrawalMoney) throws WalletException {
+        if (withdrawalMoney.amount <= 0) {
             throw new WalletException(WalletExceptionMessage.INVALID_INPUT);
         }
-        if (this.amount < withdrawalMoney.currencyCode.convertToBaseCurrency(withdrawalMoney.amount)) {
+        if (this.currencyCode.convertToBaseCurrency(this.amount) < withdrawalMoney.currencyCode.convertToBaseCurrency(withdrawalMoney.amount)) {
             throw new WalletException(WalletExceptionMessage.NOT_ENOUGH_BALANCE);
         }
-        this.amount = this.amount - withdrawalMoney.currencyCode.convertToBaseCurrency(withdrawalMoney.amount);
+        double newAmount = this.currencyCode.convertToBaseCurrency(this.amount) - withdrawalMoney.currencyCode.convertToBaseCurrency(withdrawalMoney.amount);
+        return new Money(formatDouble(newAmount), CurrencyCode.INR);
+    }
+
+    private double formatDouble(double value){
+        decimalFormat.setRoundingMode(RoundingMode.DOWN);
+        return Double.parseDouble(decimalFormat.format(value));
     }
 
     public static double moneyInPreferredCurrency(Money money, CurrencyCode currencyCode) {

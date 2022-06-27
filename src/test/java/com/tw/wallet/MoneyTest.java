@@ -8,11 +8,11 @@ class MoneyTest {
     @Test
     void shouldReturn40INRWhenMoneyIs30INRAndAddMoneyIs10INR() throws WalletException {
         Money money30 = Money.createMoney(30d, CurrencyCode.INR);
-        Money money40 = Money.createMoney(10d, CurrencyCode.INR);
+        Money money10 = Money.createMoney(10d, CurrencyCode.INR);
 
-        money30.addMoney(money40);
+        Money newMoney = money30.addMoney(money10);
 
-        assertEquals(40, money30.amount);
+        assertEquals(40, newMoney.amount);
     }
 
     @Test
@@ -37,5 +37,26 @@ class MoneyTest {
         });
 
         assertEquals(WalletExceptionMessage.INVALID_INPUT, exception.getMessage());
+    }
+
+    @Test
+    void shouldReturn10INRWhenMoneyIs30USDAndWithdrawalMoneyIs20USD() throws WalletException {
+        Money money30 = Money.createMoney(30d, CurrencyCode.USD);
+        Money money20 = Money.createMoney(20d, CurrencyCode.USD);
+
+        Money newMoney = money30.withdrawMoney(money20);
+
+        assertEquals(781.39, newMoney.amount);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenMoneyIs20INRAndWithdrawIs40INR() {
+        Throwable exception = assertThrows(WalletException.class, () -> {
+            Money money30 = Money.createMoney(20d, CurrencyCode.INR);
+
+            money30.withdrawMoney(Money.createMoney(40d, CurrencyCode.INR));
+        });
+
+        assertEquals(WalletExceptionMessage.NOT_ENOUGH_BALANCE, exception.getMessage());
     }
 }

@@ -19,11 +19,11 @@ public class Wallet {
     }
 
     public void deposit(Money depositMoney) throws WalletException {
-        balance.addMoney(depositMoney);
+        balance = balance.addMoney(depositMoney);
     }
 
     public void withdraw(Money withdrawalMoney) throws WalletException {
-        balance.withdrawMoney(withdrawalMoney);
+        balance = balance.withdrawMoney(withdrawalMoney);
     }
 
     public double balanceInPreferredCurrency(Wallet wallet, CurrencyCode currencyCode) {
