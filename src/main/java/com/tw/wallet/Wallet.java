@@ -1,5 +1,7 @@
 package com.tw.wallet;
 
+import com.tw.wallet.exception.WalletException;
+
 public class Wallet {
 
     private Money balance;
@@ -9,8 +11,6 @@ public class Wallet {
     }
 
     public static Wallet createWallet(Money money) {
-        money.amount = money.currencyCode.convertToBaseCurrency(money.amount);
-        money.currencyCode = money.currencyCode.getBaseCurrency();
         return new Wallet(money);
     }
 
